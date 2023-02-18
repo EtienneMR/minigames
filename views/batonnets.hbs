@@ -1,0 +1,14 @@
+{{#contentFor "scripts"}}
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+<script src="/assets/js/main.js"></script>
+<script src="/assets/js/batonnets.js" defer=""></script>
+{{/contentFor}}
+
+<div class="batonnets-list" id="list"></div>
+<h3 id="turn">Tour de l'adversaire</h3>
+<p class="selector" id="day-selector">
+    <i class="bx bx-chevron-left" id="count-down"></i>
+    <span class="batonnets-value" id="count">1</span>
+    <i class="bx bx-chevron-right" id="count-up"></i>
+</p>
+<button class="batonnets-button" id="valid">Valider</button>
