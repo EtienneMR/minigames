@@ -22,6 +22,13 @@ socket.on("setParty", (party) => {
     location.hash = party
 })
 
+socket.on("error", (err) => {
+    console.error(err)
+    if (err == "party full") {
+        location.pathname = "/party-full"
+    }
+})
+
 jQuery(() => {
     $(document.body).on("click", (evt) => {
         let { target } = evt

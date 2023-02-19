@@ -9,10 +9,10 @@ const game = require("../../classes/game.js")
  */
 module.exports = (io) => {
     return class batonnets extends game {
-        static id = "batonnets"
-        static title = "Le jeu des batonnets"
-        static desc = "Jouez au grand classique jeu des batonnets avec vos amis !"
-        static ttl = 60 * 1000
+        static id       = "batonnets"
+        static title    = "Le jeu des batonnets"
+        static desc     = "Jouez au grand classique jeu des batonnets avec vos amis !"
+        static ttl      = 60 * 1000
 
         constructor(party) {
             super(party)

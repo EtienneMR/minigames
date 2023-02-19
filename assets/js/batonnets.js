@@ -38,7 +38,7 @@ socket.on("update", (data) => {
         $("#list").html("<div></div>".repeat(total))
     }
 
-    if (alone) {
+    if (alone && sticks>0) {
         $("#remaning").html(`<button class="share-btn" type="button"><i class="bx bx-share"></i>Inviter un ami</button>`)
     }
     else if (started) {

@@ -63,6 +63,9 @@ function makeServerId(length = 4) {
     app.get("/", (req, res) => {
         res.render("index")
     })
+    app.get("/party-full", (req, res) => {
+        res.render("party-full")
+    })
 })();
 
 (() => {
