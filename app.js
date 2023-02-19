@@ -70,6 +70,7 @@ function makeServerId(length = 4) {
     app.get("/", (req, res) => {
         res.render("index")
     })
+
     app.get("/party-full", (req, res) => {
         res.render("party-full")
     })
@@ -136,6 +137,19 @@ function makeServerId(length = 4) {
             console.error(`Error from ${socket.id}`, ...args)
             socket.disconnect()
         })
+    })
+
+    app.get("/join", (req, res) => {
+        let {party} = req.query
+
+        let minigame = minigames.find(m => m.servers.find((s) => s.party == party))
+
+        if (minigame) {
+            res.redirect(`/${minigame.id}#${party}`)
+        }
+        else {
+            res.render("party-not-found")
+        }
     })
 
     server.listen(port, () => console.log(`Site démarré à l'adresse http://localhost:${port}`))

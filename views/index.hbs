@@ -1,3 +1,7 @@
+{{#contentFor "scripts"}}
+<script src="/assets/js/index.js" defer=""></script>
+{{/contentFor}}
+
 {{#contentFor "meta"}}
 <meta property="og:title" content="Mini jeux" />
 <meta property="og:site_name" content="etiennemr.fr" />
@@ -18,4 +22,21 @@
         </a>
     </div>
     {{/each}}
+    <div>
+        <form id="join">
+            <h3>Rejoindre à partir d'un code</h3>
+            <img src="/assets/img/batonnets.png">
+            <hr>
+            <p class="center">
+                <label for="join-code">Code de session</label>
+                <input id="join-code" class="code4digit" type="text"
+                    minlength="4" maxlength="4" placeholder="0000"
+                    required="" autocomplete="off">
+            </p>
+            <hr>
+            <button class="play-btn" title="Jouer" href="#">
+                <i class="bx bx-play"></i>
+            </button>
+        </form>
+    </div>
 </div>

@@ -1,0 +1,11 @@
+<div class="cards">
+    <div>
+        <h3>Désolé la partie demandée est introuvable</h3>
+        <br>
+        <button id="back">Retour</button>
+    </div>
+</div>
+<script>
+    history.replaceState(null,null,"/")
+    document.getElementById("back").onclick = () => location.reload()
+</script>
