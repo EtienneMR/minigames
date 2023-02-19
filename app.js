@@ -29,6 +29,13 @@ function makeServerId(length = 4) {
 }
 
 (() => { //express config
+    app.disable("x-powered-by")
+
+    app.use((req, res, next) => {
+        res.set('Cache-Control', 'public, max-age=43200, stale-while-revalidate=604800')
+        next()
+    })
+
     app.get("/robots.txt", (req, res) => {
         res.sendFile(path.resolve("./assets/robots.txt"))
     })
