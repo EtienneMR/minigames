@@ -34,11 +34,8 @@ function makeServerId(length = 4) {
         res.sendFile(path.resolve("./assets/robots.txt"))
     })
 
-    app.use(express.json())
-    app.use(express.urlencoded())
-
     app.use(session({
-        secret: "appLycee",
+        secret: "minigames",
         resave: false,
         saveUninitialized: false,
         cookie: {
@@ -73,6 +70,7 @@ function makeServerId(length = 4) {
 
 (() => {
     const minigames = []
+    app.locals.games = minigames
 
     fs.readdir("./minigames")
         .then((files) => {

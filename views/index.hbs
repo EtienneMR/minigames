@@ -1,4 +1,17 @@
 {{#contentFor "scripts"}}
 {{/contentFor}}
 
-<h1>Index</h1>
+<div class="cards">
+    {{#each games }}
+    <div>
+        <h3>{{this.title}}</h3>
+        <img src="/assets/img/{{this.id}}.png">
+        <hr>
+        <p>{{this.desc}}</p>
+        <hr>
+        <a class="play-btn" title="Jouer" href="/{{this.id}}">
+            <i class="bx bx-play"></i>
+        </a>
+    </div>
+    {{/each}}
+</div>

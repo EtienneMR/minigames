@@ -4,6 +4,21 @@
 <script src="/assets/js/batonnets.js" defer=""></script>
 {{/contentFor}}
 
+<form id="new" class="batonnets-new">
+    <h3>Nouvelle partie</h3>
+    <div class="battonets-rules">
+        <label for="new-total">Nombre de batonnets au départ</label>
+        <input id="new-total" type="number" value="21" required="" min="2">
+        <label for="new-maxrm">Nombre de batonnets enlevables par tour</label>
+        <input id="new-maxrm" type="number" value="3" required="" min="1">
+    </div>
+    <button id="new-start">Créer</button>
+</form>
+<div class="battonets-rules" id="rules">
+    <div><b>Règles</b></div><div><b id="rules-presset">...</b></div>
+    <div>Nombre de batonnets au départ</div><div id="rules-total">...</div>
+    <div>Nombre de batonnets enlevables par tour</div><div id="rules-maxrm">...</div>
+</div>
 <div class="batonnets-list" id="list"></div>
 <h3 id="turn">Tour de l'adversaire</h3>
 <p class="selector" id="day-selector">

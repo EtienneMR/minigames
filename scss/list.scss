@@ -1,0 +1,71 @@
+.cards {
+    max-width: 100%;
+    margin: 0 auto;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+
+    &>div {
+        padding: 1rem;
+        border: white solid 1px;
+        border-radius: 1rem;
+        text-align: center;
+
+        &>h3 {
+            margin: 0 0 1em 0;
+        }
+
+        &>img {
+            width: 100%;
+            height: 10em;
+            object-fit: cover;
+        }
+    }
+}
+
+.play-btn {
+    width: 100%;
+    padding: 4px 25px;
+    border: 2px solid white;
+    font-family: gt haptik;
+    font-weight: 500;
+    font-size: 40px;
+    text-transform: uppercase;
+    background: transparent;
+    cursor: pointer;
+    transition: all .3s ease;
+    position: relative;
+    display: flex;
+    box-shadow: 0 1px 15px rgb(0 0 0 / 50%);
+    text-align: initial;
+    background: transparent;
+    color: #fff;
+    align-content: center;
+    justify-content: center;
+    text-decoration: none;
+
+    &:after {
+        position: absolute;
+        content: "";
+        width: 0;
+        height: 100%;
+        top: 0;
+        right: 0;
+        z-index: -1;
+        background: #4fad73;
+        transition: all .3s ease;
+    }
+
+    &:hover {
+        border: 2px solid gray;
+
+        &:after {
+            left: 0;
+            width: 100%;
+        }
+    }
+
+    &:active {
+        top: 2px;
+    }
+}

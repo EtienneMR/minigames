@@ -1,11 +1,30 @@
 body {
-    margin: 0;
+    margin: 20px;
     background-color: black;
     color: white;
     display: flex;
     align-items: center;
-    width: 100vw;
-    height: 100vh;
+    width: calc(100vw - 40px);
+    min-height: calc(100vh - 40px);
     justify-content: center;
     flex-direction: column;
+    text-align: center;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+input {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid white;
+    color: white;
+}
+
+button {
+    background: transparent;
+    border: 2px solid white;
+    border-radius: 0.5em;
+    color: white;
 }
