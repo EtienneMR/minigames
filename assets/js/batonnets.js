@@ -42,7 +42,7 @@ socket.on("update", (data) => {
         $("#remaning").text(`${sticks} batonnet${sticks>1?"s":""} restant${sticks>1?"s":""}`)
     }
     else {
-        $("#remaning").text(alone?"Votre adversaire n'a toujours pas rejoint":"Votre adversaire vous attends")
+        $("#remaning").text((turn == socket.id)?(alone?"Votre adversaire n'a toujours pas rejoint":"Votre adversaire vous attends"):"Votre adversaire doit configurer la partie")
     }
     $("#list").children().each((index, element) => {
         element.style.backgroundColor = (sticks == 0 || sticks == total) ? "" : (index >= sticks ? "black" : "white")
