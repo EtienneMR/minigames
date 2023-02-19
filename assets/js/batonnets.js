@@ -21,17 +21,17 @@ socket.on("update", (data) => {
         }
         $("#list").addClass("pause")
     }
+    else if (sticks <= 0) {
+        $("#turn").text(turn == socket.id ? "Vous avez perdu !" : "Vous avez gagné !")
+        $("#list").addClass("pause")
+    }
     else if (alone) {
         $("#turn").text("En attente d'un adversaire ...")
         $("#list").addClass("pause")
     }
-    else if (sticks > 0) {
+    else {
         $("#turn").text(turn == socket.id ? "Votre tour" : "Tour de l'adversaire")
         $("#list").removeClass("pause")
-    }
-    else {
-        $("#turn").text(turn == socket.id ? "Vous avez perdu !" : "Vous avez gagné !")
-        $("#list").addClass("pause")
     }
 
     if ($("#list").children().length != total) {
@@ -39,10 +39,10 @@ socket.on("update", (data) => {
     }
 
     if (started) {
-        $("#remaning").text(`${sticks} batonnet${sticks>1?"s":""} restant${sticks>1?"s":""}`)
+        $("#remaning").text(`${sticks} batonnet${sticks > 1 ? "s" : ""} restant${sticks > 1 ? "s" : ""}`)
     }
     else {
-        $("#remaning").text((turn == socket.id)?(alone?"Votre adversaire n'a toujours pas rejoint":"Votre adversaire vous attends"):"Votre adversaire doit configurer la partie")
+        $("#remaning").text((turn == socket.id) ? (alone ? "Votre adversaire n'a toujours pas rejoint" : "Votre adversaire vous attends") : "Votre adversaire doit configurer la partie")
     }
     $("#list").children().each((index, element) => {
         element.style.backgroundColor = (sticks == 0 || sticks == total) ? "" : (index >= sticks ? "black" : "white")
@@ -64,6 +64,12 @@ socket.on("update", (data) => {
             $("#new").hide()
         }
         $("#rules").hide()
+    }
+    if (alone) {
+        $(".share").show()
+    }
+    else {
+        $(".share").hide()
     }
 })
 

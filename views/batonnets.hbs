@@ -3,6 +3,12 @@
 <script src="/assets/js/main.js"></script>
 <script src="/assets/js/batonnets.js" defer=""></script>
 {{/contentFor}}
+{{#contentFor "meta"}}
+<meta property="og:title" content="Jeu des batonnets" />
+<meta property="og:site_name" content="etiennemr.fr" />
+<meta property="og:type" content="game" />
+<meta property="og:description" content="Rejoins moi sur le jeu des batonnets" />
+{{/contentFor}}
 
 <form id="new" class="batonnets-new">
     <h3>Nouvelle partie</h3>
@@ -13,11 +19,13 @@
         <input id="new-maxrm" type="number" value="3" required="" min="1">
     </div>
     <button id="new-start">Créer</button>
+    <p class="share"><button class="share-btn" type="button"><i class="bx bx-share"></i>Inviter un ami</button></p>
 </form>
 <div class="battonets-rules" id="rules">
     <div><b>Règles</b></div><div><b id="rules-presset">...</b></div>
     <div>Nombre de batonnets au départ</div><div id="rules-total">...</div>
     <div>Nombre de batonnets enlevables par tour</div><div id="rules-maxrm">...</div>
+    <p class="share"><button class="share-btn" type="button"><i class="bx bx-share"></i>Inviter un ami</button></p>
 </div>
 <span id="remaning"></span>
 <div class="batonnets-list" id="list"></div>

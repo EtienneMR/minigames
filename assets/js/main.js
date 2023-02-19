@@ -1,4 +1,7 @@
 let isUserChange = false
+let inviteMessages = [
+    "On va voir qui est le plus fort",
+]
 
 addEventListener("hashchange", () => {
     if (isUserChange) {
@@ -9,7 +12,7 @@ addEventListener("hashchange", () => {
 
 const socket = io({
     query: {
-        game:  location.pathname.split("/")[1],
+        game: location.pathname.split("/")[1],
         party: location.hash.substring(1),
     }
 });
@@ -17,4 +20,18 @@ const socket = io({
 socket.on("setParty", (party) => {
     isUserChange = false
     location.hash = party
+})
+
+jQuery(() => {
+    $(document.body).on("click", (evt) => {
+        let { target } = evt
+
+        if (target.classList.contains("share-btn")) {
+            navigator.share({
+                url: location.href,
+                text: inviteMessages[Math.floor(Math.random() * inviteMessages.length)],
+                title: "Rejoins moi sur ce super mini-jeu !",
+            })
+        }
+    })
 })
