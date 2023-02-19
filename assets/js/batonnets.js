@@ -38,7 +38,10 @@ socket.on("update", (data) => {
         $("#list").html("<div></div>".repeat(total))
     }
 
-    if (started) {
+    if (alone) {
+        $("#remaning").html(`<button class="share-btn" type="button"><i class="bx bx-share"></i>Inviter un ami</button>`)
+    }
+    else if (started) {
         $("#remaning").text(`${sticks} batonnet${sticks > 1 ? "s" : ""} restant${sticks > 1 ? "s" : ""}`)
     }
     else {
@@ -64,12 +67,6 @@ socket.on("update", (data) => {
             $("#new").hide()
         }
         $("#rules").hide()
-    }
-    if (alone) {
-        $(".share").show()
-    }
-    else {
-        $(".share").hide()
     }
 })
 

@@ -2,8 +2,10 @@ const express = require("express")
 const socket = require("socket.io");
 
 module.exports = class game {
-    static id = ""
-    static ttl = 5000
+    static id       = "[id]"
+    static title    = "[title]"
+    static desc     = "[desc]"
+    static ttl      =  5000
 
     static servers = []
     cleanupTimeout = null
