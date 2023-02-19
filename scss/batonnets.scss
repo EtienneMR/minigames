@@ -46,16 +46,6 @@
     text-align: center;
 }
 
-.batonnets-button {
-    background-color: black;
-    border: none;
-    color: white;
-
-    &:active {
-        background-color: rgb(25, 25, 25);
-    }
-}
-
 .battonets-rules {
     display: grid;
     grid-template-columns: 50% 50%;

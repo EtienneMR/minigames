@@ -1,5 +1,4 @@
 const port = 8005
-const cache_ver = 18
 const session_length = 1000 * 60 * 30
 
 const express = require("express")
@@ -54,8 +53,6 @@ function makeServerId(length = 4) {
     }))
         .set("view engine", "hbs")
         .set("views", "./views")
-
-    hbs.registerHelper("cache_ver", () => new hbs.SafeString(`?v=${cache_ver}`))
 
     app.use("/assets", express.static("./assets"))
 

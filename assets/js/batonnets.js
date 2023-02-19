@@ -14,14 +14,14 @@ socket.on("update", (data) => {
 
     if (!started) {
         if (turn == socket.id) {
-            $("#turn").text("Veuillez configurer la partie"+(alone?" et d'un adversaire":""))
+            $("#turn").text("Veuillez configurer la partie")
         }
         else {
             $("#turn").text("En attente de la configuration du serveur ...")
         }
         $("#list").addClass("pause")
     }
-    if (alone) {
+    else if (alone) {
         $("#turn").text("En attente d'un adversaire ...")
         $("#list").addClass("pause")
     }
@@ -38,6 +38,12 @@ socket.on("update", (data) => {
         $("#list").html("<div></div>".repeat(total))
     }
 
+    if (started) {
+        $("#remaning").text(`${sticks} batonnet${sticks>1?"s":""} restant${sticks>1?"s":""}`)
+    }
+    else {
+        $("#remaning").text(alone?"Votre adversaire n'a toujours pas rejoint":"Votre adversaire vous attends")
+    }
     $("#list").children().each((index, element) => {
         element.style.backgroundColor = (sticks == 0 || sticks == total) ? "" : (index >= sticks ? "black" : "white")
     })
