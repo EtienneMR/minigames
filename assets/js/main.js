@@ -10,7 +10,6 @@ function saveParty() {
     if (party) {
         let parties = (localStorage.getItem("parties") ?? "").split(";").filter((p, i) => p.split("|")[0] != party && (new Date() - new Date(p.split("|")[1]) < 1000 * 60 * 60) && i < 9)
         parties.unshift(party + "|" + new Date().toISOString())
-        console.log(parties)
         localStorage.setItem("parties", parties.join(";"))
     }
 }

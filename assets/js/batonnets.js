@@ -53,7 +53,7 @@ socket.on("update", (data) => {
         element.style.backgroundColor = (sticks == 0 || sticks == total) ? "" : (index >= sticks ? "black" : "white")
     })
 
-    $("#rules-presset").text((maxrm == 3 && total == 21) ? "Classiques" : "Personnalisées")
+    $("#rules-presset").text((maxrm == 3 && total == 21) ? $("meta[name=mode]").attr("content") : "Personnalisées")
     $("#rules-total").text(total)
     $("#rules-maxrm").text(maxrm)
     if (started) {

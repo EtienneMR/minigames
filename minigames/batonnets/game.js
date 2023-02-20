@@ -136,7 +136,9 @@ module.exports = (io) => {
             let router = express.Router()
 
             router.get("/", (req, res) => {
-                res.render("batonnets")
+                res.render("batonnets", {
+                    mode: "Classique"
+                })
             })
 
             return router
