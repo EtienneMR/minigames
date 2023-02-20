@@ -37,8 +37,8 @@ let username = (() => {
 
 let userid = (() => {
     let id = localStorage.getItem("userid")
-    if (!id) {
-        id = String(Math.floor(Math.random() * 10 ^ 6))
+    if (!id && (id < 0 || id > 12)) {
+        id = String(Math.floor(Math.random() * 1000000))
         localStorage.setItem("userid", id)
     }
     return id
