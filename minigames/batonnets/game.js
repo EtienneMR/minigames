@@ -69,7 +69,7 @@ module.exports = (io) => {
                 this.player2id = userid
             }
             else {
-                socket.emit("error", "party full")
+                socket.emit("redirect", "party-full")
                 return socket.disconnect()
             }
             socket.on("take", (num) => {

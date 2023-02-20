@@ -76,6 +76,10 @@ function makeServerId(length = 4) {
     app.get("/party-full", (req, res) => {
         res.render("party-full")
     })
+
+    app.get("/party-not-found", (req, res) => {
+        res.render("party-not-found")
+    })
 })();
 
 (() => {
@@ -103,10 +107,16 @@ function makeServerId(length = 4) {
             let server = minigame.servers.find((s) => s.party == party)
 
             if (!server) {
-                party = makeServerId()
-                server = new minigame(party)
-                minigame.servers.push(server)
-                socket.emit("setParty", party)
+                if (party) {
+                    socket.emit("redirect", "/party-not-found")
+                    return socket.disconnect()
+                }
+                else {
+                    party = makeServerId()
+                    server = new minigame(party)
+                    minigame.servers.push(server)
+                    socket.emit("setParty", party)
+                }
             }
 
             if (server.cleanupTimeout) {

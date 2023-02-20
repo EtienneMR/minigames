@@ -59,11 +59,12 @@ socket.on("setParty", (party) => {
     location.hash = party
 })
 
+socket.on("redirect", (target) => {
+    location =  new URL(target, location)
+})
+
 socket.on("error", (err) => {
     console.error(err)
-    if (err == "party full") {
-        location.pathname = "/party-full"
-    }
 })
 
 jQuery(() => {
