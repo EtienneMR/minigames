@@ -87,7 +87,6 @@ module.exports = (io) => {
                 if (this.sticks == 0 || socket == this.player2) {
                     this.display = this.sticks
                 }
-                console.log(this.sticks, this.display)
                 this.sendUpdate()
             })
             socket.on("start", ({ total, maxrm }) => {
