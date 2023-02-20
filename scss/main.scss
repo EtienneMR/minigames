@@ -66,3 +66,16 @@ header {
     display: flex;
     justify-content: space-between;
 }
+
+.grid {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    row-gap: 1em;
+    column-gap: 0.5em;
+    margin: 2em;
+    text-align: initial;
+}
+
+h1 {
+    font-family: monospace;
+}

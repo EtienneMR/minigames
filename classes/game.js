@@ -21,7 +21,8 @@ module.exports = class game {
      * @param {socket.Socket} socket 
      */
     addPlayer(socket) {
-        console.log(`[${this.party}] player joined ${socket.id}`)
+        let {username, userid} = socket.handshake.query
+        console.log(`[${this.party}] player joined ${username}:${userid}#${socket.id}`)
     }
 
     /**
@@ -29,7 +30,8 @@ module.exports = class game {
      * @param {socket.Socket} socket 
      */
     removePlayer(socket) {
-        console.log(`[${this.party}] player leaved ${socket.id}`)
+        let {username, userid} = socket.handshake.query
+        console.log(`[${this.party}] player leaved ${username}:${userid}#${socket.id}`)
     }
 
     cleanup() {

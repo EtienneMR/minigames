@@ -8,6 +8,8 @@ socket.on("update", (data) => {
         turn,
         alone,
         started,
+        title,
+        replay,
     } = data
 
     maxrm = data.maxrm
@@ -68,6 +70,15 @@ socket.on("update", (data) => {
         }
         $("#rules").hide()
     }
+    $("#title").text(title)
+    if (sticks <= 0) {
+        $("#counter").hide()
+        $("#replay").text(`Rejouer ${replay}`).show()
+    }
+    else {
+        $("#counter").show()
+        $("#replay").hide()
+    }
 })
 
 $("#count-down").click(() => {
@@ -96,3 +107,9 @@ $("#new").submit((evt) => {
         maxrm: newMaxrm,
     })
 })
+
+$("#replay").click(() => {
+    socket.emit("replay")
+})
+
+window.addEventListener("load", ()=>socket.emit("ready"))

@@ -9,16 +9,20 @@ const game = require("../../classes/game.js")
  */
 module.exports = (io) => {
     return class batonnets extends game {
-        static id       = "batonnets"
-        static title    = "Le jeu des batonnets"
-        static desc     = "Jouez au grand classique jeu des batonnets avec vos amis !"
-        static ttl      = 60 * 1000
+        static id = "batonnets"
+        static title = "Le jeu des batonnets"
+        static desc = "Jouez au grand classique jeu des batonnets avec vos amis !"
+        static ttl = 60 * 1000
 
         constructor(party) {
             super(party)
 
             this.player1 = null
             this.player2 = null
+            this.player1id = null
+            this.player2id = null
+            this.player1replay = false
+            this.player2replay = false
             this.p1turn = true
             this.started = false
 
@@ -35,6 +39,8 @@ module.exports = (io) => {
                 turn: (this.p1turn ? this.player1?.id : this.player2?.id),
                 alone: !this.player1 || !this.player2,
                 started: this.started,
+                title: (this.player1?.handshake.query.userid == this.player2?.handshake.query.userid) ? "Partie d'entrainement" : (this.player1?.handshake.query.username ?? "???") + " vs " + (this.player2?.handshake.query.username ?? "???"),
+                replay: `${this.player1replay ? 1 : 0 + this.player2replay ? 1 : 0}/2`
             })
         }
 
@@ -44,11 +50,22 @@ module.exports = (io) => {
          */
         addPlayer(socket) {
             super.addPlayer(socket)
-            if (!this.player1) {
+            let { userid } = socket.handshake.query
+            if (!this.player1 && this.player1id == userid) {
                 this.player1 = socket
+                this.player1id = userid
+            }
+            else if (!this.player2 && this.player2id == userid) {
+                this.player2 = socket
+                this.player2id = userid
+            }
+            else if (!this.player1) {
+                this.player1 = socket
+                this.player1id = userid
             }
             else if (!this.player2) {
                 this.player2 = socket
+                this.player2id = userid
             }
             else {
                 socket.emit("error", "party full")
@@ -67,7 +84,7 @@ module.exports = (io) => {
                 }
                 this.sendUpdate()
             })
-            socket.once("start", ({ total, maxrm }) => {
+            socket.on("start", ({ total, maxrm }) => {
                 if (socket == (this.p1turn ? this.player1 : this.player2)) {
                     this.total = total
                     this.sticks = total
@@ -76,6 +93,26 @@ module.exports = (io) => {
                     this.sendUpdate()
                 }
             })
+            socket.on("replay", () => {
+                if (socket == this.player1) {
+                    this.player1replay = true
+                }
+                else {
+                    this.player2replay = true
+                }
+                if (this.player1replay && this.player2replay) {
+                    this.player1replay = false
+                    this.player2replay = false
+                    this.p1turn = true
+                    this.started = false
+
+                    this.total = 21
+                    this.sticks = 21
+                    this.maxrm = 3
+                }
+                this.sendUpdate()
+            })
+            socket.on("ready", () => this.sendUpdate())
             this.sendUpdate()
         }
 
