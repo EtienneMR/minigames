@@ -16,6 +16,8 @@ const app = express()
 const server = http.createServer(app)
 const io = new socket.Server(server);
 
+app.locals.cache_ver = `?v=${new Date().getMilliseconds()*new Date().getMinutes()}`
+
 function makeServerId(length = 4) {
     let result = ''
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
