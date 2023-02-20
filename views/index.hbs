@@ -30,20 +30,20 @@
     </div>
     {{/each}}
     <div>
-        <form id="join">
+        <form id="party">
             <h3>Rejoindre à partir d'un code</h3>
             <img src="/assets/img/batonnets.png">
             <hr>
             <p class="center">
-                <label for="join-code">Code de session</label>
-                <input id="join-code" class="code4digit" type="text"
-                    minlength="4" maxlength="4" placeholder="0000"
-                    required="" autocomplete="off">
+                <label for="party-code">Code de session</label>
+                <input id="party-code" class="code4digit" type="text" minlength="4" maxlength="4" placeholder="0000"
+                    required="" autocomplete="off" list="party-history">
             </p>
             <hr>
             <button class="play-btn" title="Jouer" href="#">
                 <i class="bx bx-play"></i>
             </button>
+            <datalist id="party-history"></datalist>
         </form>
     </div>
 </div>

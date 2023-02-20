@@ -73,7 +73,7 @@ module.exports = (io) => {
             }
             socket.on("take", (num) => {
                 if (!this.started) return
-                if (socket == (this.p1turn ? this.player1 : this.player2)) {
+                if (socket == (this.p1turn ? this.player1 : this.player2) && (num > 0 && num < this.maxrm)) {
                     if (this.sticks > num) {
                         this.sticks -= num
                         this.p1turn = !this.p1turn
@@ -85,7 +85,7 @@ module.exports = (io) => {
                 this.sendUpdate()
             })
             socket.on("start", ({ total, maxrm }) => {
-                if (socket == (this.p1turn ? this.player1 : this.player2)) {
+                if (socket == (this.p1turn ? this.player1 : this.player2) && !this.started) {
                     this.total = total
                     this.sticks = total
                     this.maxrm = maxrm
