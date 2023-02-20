@@ -8,10 +8,10 @@ const game = require("../../classes/game.js")
  * @returns 
  */
 module.exports = (io) => {
-    return class batonnets extends game {
-        static id = "batonnets"
-        static title = "Le jeu des batonnets"
-        static desc = "Jouez au grand classique jeu des batonnets avec vos amis !"
+    return class batonnets2 extends game {
+        static id = "batonnets2"
+        static title = "Le jeu des batonnets (variante)"
+        static desc = "Le jeu des batonnets mais les deux joueurs jouent en même temps !"
         static ttl = 60 * 1000
         static hidden   =  false
 
@@ -29,13 +29,14 @@ module.exports = (io) => {
 
             this.total = 21
             this.sticks = 21
+            this.display = 21
             this.maxrm = 3
         }
 
         sendUpdate() {
             io.to(this.party).emit("update", {
                 total: this.total,
-                sticks: this.sticks,
+                sticks: this.display,
                 maxrm: this.maxrm,
                 turn: (this.p1turn ? this.player1?.id : this.player2?.id),
                 alone: !this.player1 || !this.player2,
@@ -83,12 +84,17 @@ module.exports = (io) => {
                         this.sticks = 0
                     }
                 }
+                if (this.sticks == 0 || socket == this.player2) {
+                    this.display = this.sticks
+                }
+                console.log(this.sticks, this.display)
                 this.sendUpdate()
             })
             socket.on("start", ({ total, maxrm }) => {
                 if (socket == (this.p1turn ? this.player1 : this.player2) && !this.started) {
                     this.total = total
                     this.sticks = total
+                    this.display = total
                     this.maxrm = maxrm
                     this.started = true
                     this.sendUpdate()
@@ -109,6 +115,7 @@ module.exports = (io) => {
 
                     this.total = 21
                     this.sticks = 21
+                    this.display = 21
                     this.maxrm = 3
                 }
                 this.sendUpdate()

@@ -6,6 +6,7 @@ module.exports = class game {
     static title    = "[title]"
     static desc     = "[desc]"
     static ttl      =  5000
+    static hidden   =  false
 
     static servers = []
     cleanupTimeout = null

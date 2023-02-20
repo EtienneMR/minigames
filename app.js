@@ -95,7 +95,7 @@ function makeServerId(length = 4) {
     io.on('connection', (socket) => {
         let { game, party } = socket.handshake.query
 
-        let minigame = minigames.find((m) => m.id = game)
+        let minigame = minigames.find((m) => m.id == game)
 
         if (minigame) {
             socket.join(game)

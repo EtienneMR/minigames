@@ -1,0 +1,22 @@
+.puissance4-grid {
+    td {
+        border: 1px solid white;
+        padding: 3px;
+
+        &::after {
+            width: 21px;
+            height: 21px;
+            display: block;
+            border-radius: 100%;
+            content: "";
+        }
+
+        &.red::after {
+            background-color: red;
+        }
+
+        &.yellow::after {
+            background-color: yellow;
+        }
+    }
+}

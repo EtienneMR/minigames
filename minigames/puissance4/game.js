@@ -9,11 +9,11 @@ const game = require("../../classes/game.js")
  */
 module.exports = (io) => {
     return class batonnets extends game {
-        static id = "batonnets"
-        static title = "Le jeu des batonnets"
-        static desc = "Jouez au grand classique jeu des batonnets avec vos amis !"
+        static id = "puissance4"
+        static title = "Le jeu du puissance 4"
+        static desc = "Jouez au grand au puissance 4 avec vos amis !"
         static ttl = 60 * 1000
-        static hidden   =  false
+        static hidden   =  true
 
         constructor(party) {
             super(party)
@@ -27,9 +27,9 @@ module.exports = (io) => {
             this.p1turn = true
             this.started = false
 
-            this.total = 21
-            this.sticks = 21
-            this.maxrm = 3
+            this.data = []
+            this.width = 0
+            this.height = 0
         }
 
         sendUpdate() {
@@ -72,7 +72,7 @@ module.exports = (io) => {
                 socket.emit("error", "party full")
                 return socket.disconnect()
             }
-            socket.on("take", (num) => {
+            socket.on("place", (w) => {
                 if (!this.started) return
                 if (socket == (this.p1turn ? this.player1 : this.player2) && (num > 0 && num <= this.maxrm)) {
                     if (this.sticks > num) {
@@ -85,13 +85,19 @@ module.exports = (io) => {
                 }
                 this.sendUpdate()
             })
-            socket.on("start", ({ total, maxrm }) => {
+            socket.on("start", (w, h) => {
                 if (socket == (this.p1turn ? this.player1 : this.player2) && !this.started) {
-                    this.total = total
-                    this.sticks = total
-                    this.maxrm = maxrm
-                    this.started = true
-                    this.sendUpdate()
+                    this.width = w
+                    this.height = h
+                    let data = []
+                    for (let x = 0; x < w; i++) {
+                        let row = []
+                        for (let y = 0; x < h; i++) {
+                            row.push(null)
+                        }
+                        data.push(row)
+                    }
+                    this.data = data
                 }
             })
             socket.on("replay", () => {
@@ -136,7 +142,7 @@ module.exports = (io) => {
             let router = express.Router()
 
             router.get("/", (req, res) => {
-                res.render("batonnets")
+                res.render("puissance4")
             })
 
             return router

@@ -18,9 +18,10 @@
 
 <div class="cards">
     {{#each games }}
+    {{#unless this.hidden}}
     <div>
         <h3>{{this.title}}</h3>
-        <img src="/assets/img/{{this.id}}.png">
+        <img src="/assets/img/{{this.id}}.png" alt="{{this.title}}'s icon">
         <hr>
         <p>{{this.desc}}</p>
         <hr>
@@ -28,11 +29,12 @@
             <i class="bx bx-play"></i>
         </a>
     </div>
+    {{/unless }}
     {{/each}}
     <div>
         <form id="party">
             <h3>Rejoindre à partir d'un code</h3>
-            <img src="/assets/img/batonnets.png">
+            <img src="/assets/img/batonnets.png" alt="Icon">
             <hr>
             <p class="center">
                 <label for="party-code">Code de session</label>
