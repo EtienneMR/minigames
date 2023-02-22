@@ -143,7 +143,7 @@ module.exports = (io) => {
 
             router.get("/", (req, res) => {
                 res.render("batonnets", {
-                    mode: "Variant inconnu"
+                    mode: "Variante inconnu"
                 })
             })
 

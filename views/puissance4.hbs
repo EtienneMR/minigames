@@ -11,4 +11,29 @@
 {{/contentFor}}
 
 <h1 id="title">??? vs ???</h1>
+<form id="new" class="game-new">
+    <h3>Nouvelle partie</h3>
+    <div class="grid">
+        <label for="new-width">Largeur</label>
+        <input id="new-width" type="number" value="7" required="" min="2">
+        <label for="new-height">Hauteur</label>
+        <input id="new-height" type="number" value="6" required="" min="2">
+        <label for="new-align">Pièces à aligner</label>
+        <input id="new-align" type="number" value="4" required="" min="2">
+    </div>
+    <button id="new-start">Créer</button>
+</form>
+<div class="grid" id="rules">
+    <div><b>Règles</b></div>
+    <div><b id="rules-presset">...</b></div>
+    <div>Largeur</div>
+    <div id="rules-width">...</div>
+    <div>Hauteur</div>
+    <div id="rules-height">...</div>
+    <div>Pièces à aligner</div>
+    <div id="rules-align">...</div>
+</div>
+<span id="remaning"></span>
 <table class="puissance4-grid"></table>
+<h3 id="turn">...</h3>
+<button id="replay">Rejouer 0/2</button>
