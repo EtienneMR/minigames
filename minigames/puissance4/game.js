@@ -82,7 +82,7 @@ module.exports = (io) => {
             counter = 0
             let d = -Math.min(x, y)
 
-            while (x + d < this.width && y + d < this.height && x + d >= 0 && y + d >= 0) {
+            while (x + d < this.width && y + d < this.height) {
                 let row = this.data[x + d]
                 if (row && row[y + d] == this.p1turn) {
                     counter++
@@ -97,6 +97,7 @@ module.exports = (io) => {
             // Vérification anti-diagonale
             counter = 0
             let d2 = -Math.min(x, this.height - 1 - y)
+
             while (x + d2 < this.width && y - d2 < this.height && x + d2 >= 0 && y - d2 >= 0) {
                 let row = this.data[x + d2]
                 if (row && row[y - d2] == this.p1turn) {
@@ -142,6 +143,7 @@ module.exports = (io) => {
                 return socket.disconnect()
             }
             socket.on("place", (w) => {
+                w = Number(w)
                 if (!this.started || this.ended) return;
                 if (socket == (this.p1turn ? this.player1 : this.player2) && (w >= 0 && w < this.width)) {
                     if (this.data[w].length < this.height) {

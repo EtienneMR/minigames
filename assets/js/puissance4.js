@@ -40,7 +40,6 @@ $(document.body).click((evt) => {
     let { target } = evt
     if (target.tagName.toLowerCase() == "td") {
         let pos = getPos(target)
-        console.log(pos)
         socket.emit("place", pos.x)
     }
 })
