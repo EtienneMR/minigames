@@ -132,7 +132,7 @@ module.exports = (io) => {
          * 
          * @returns {express.Router}
          */
-        static loadPages() {
+        /*static loadPages() {
             let router = express.Router()
 
             router.get("/", (req, res) => {
@@ -142,6 +142,6 @@ module.exports = (io) => {
             })
 
             return router
-        }
+        }*/
     }
 }

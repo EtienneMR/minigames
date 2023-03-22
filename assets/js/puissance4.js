@@ -96,13 +96,13 @@ socket.on("update", (updateData) => {
         $("#remaning").html(`<button class="share-btn" type="button"><i class="bx bx-share"></i>Inviter un ami</button>`)
     }
     else if (started) {
-        $("#remaning").text(`${$(".red,.yellow").length}/${width * height}`)
+        $("#remaning").text(`${data.reduce((total, row) => total+row.length,0)}/${width * height}`)
     }
     else {
         $("#remaning").text((turn == socket.id) ? (alone ? "Votre adversaire n'a toujours pas rejoint" : "Votre adversaire vous attends") : "Votre adversaire doit configurer la partie")
     }
 
-    $("#rules-presset").text((width == 7 && height == 6 && align == 4) ? $("meta[name=mode]").attr("content") : "Personnalisées")
+    $("#rules-presset").text((width == 7 && height == 6 && align == 4) ? "Classiques" : "Personnalisées")
     $("#rules-width").text(width)
     $("#rules-height").text(height)
     $("#rules-align").text(align)

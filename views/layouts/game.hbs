@@ -8,11 +8,14 @@
     {{{block "meta"}}}
 
     <script src="/assets/js/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <script src="/assets/js/session.js{{cache_ver}}"></script>
-    {{{block "scripts"}}}
+    <script src="/assets/js/game.js{{cache_ver}}"></script>
+    <script src="/{{id}}/client.js{{cache_ver}}" defer=""></script>
 
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" href="/assets/css/style.css{{cache_ver}}">
+    <link rel="stylesheet" href="/{{id}}/style.css{{cache_ver}}">
 
     <link rel="apple-touch-icon" sizes="57x57" href="/assets/img/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/assets/img/apple-icon-60x60.png">

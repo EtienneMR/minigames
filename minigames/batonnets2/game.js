@@ -14,6 +14,7 @@ module.exports = (io) => {
         static desc = "Le jeu des batonnets mais les deux joueurs jouent en même temps !"
         static ttl = 60 * 1000
         static hidden   =  false
+        static style    = "batonnets"
 
         constructor(party) {
             super(party)
@@ -132,22 +133,6 @@ module.exports = (io) => {
             if (this.player1 == socket) this.player1 = null
             if (this.player2 == socket) this.player2 = null
             this.sendUpdate()
-        }
-
-        /**
-         * 
-         * @returns {express.Router}
-         */
-        static loadPages() {
-            let router = express.Router()
-
-            router.get("/", (req, res) => {
-                res.render("batonnets", {
-                    mode: "Variante inconnu"
-                })
-            })
-
-            return router
         }
     }
 }

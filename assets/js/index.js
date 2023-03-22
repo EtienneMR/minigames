@@ -8,30 +8,13 @@ $("#party").submit((evt) => {
 
 $("#user").submit((evt) => {
     evt.preventDefault()
-    let username = $("#user-name").val()
+    username = $("#user-name").val()
     localStorage.setItem("username", username)
     $("#user-name").attr("placeholder", username)
     $("#user-name").val("")
 });
 
-(() => {
-    let username = localStorage.getItem("username")
-    if (!username) {
-        let num = String(Math.floor(Math.random()*1000))
-        username = `Anonyme${"0".repeat(4-num.length)+num}`
-        localStorage.setItem("username", username)
-    }
-
-    $("#user-name").attr("placeholder", username)
-})();
-
-(() => {
-    let id = localStorage.getItem("userid")
-    if (!id || (id < 0 || id > 12)) {
-        id = String(Math.floor(Math.random() * 1000000))
-        localStorage.setItem("userid", id)
-    }
-})();
+$("#user-name").attr("placeholder", username)
 
 (() => {
     let parties = (localStorage.getItem("parties")??"").split(";").filter((p, i) => new Date()-new Date(p.split("|")[1])<1000*60*60)

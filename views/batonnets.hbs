@@ -1,18 +1,14 @@
-{{#contentFor "scripts"}}
-<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-<script src="/assets/js/main.js{{cache_ver}}"></script>
-<script src="/assets/js/batonnets.js{{cache_ver}}" defer=""></script>
-{{/contentFor}}
+
 {{#contentFor "meta"}}
 <meta property="og:title" content="Jeu des batonnets" />
 <meta property="og:site_name" content="etiennemr.fr" />
 <meta property="og:type" content="game" />
 <meta property="og:description" content="Rejoins moi sur le jeu des batonnets" />
-<meta name="mode" content="{{mode}}">
+<meta name="mode" content="{{id}}">
 {{/contentFor}}
 
 <h1 id="title">??? vs ???</h1>
-<form id="new" class="batonnets-new">
+<form id="new" class="game-new">
     <h3>Nouvelle partie</h3>
     <div class="grid">
         <label for="new-total">Nombre de batonnets au départ</label>
