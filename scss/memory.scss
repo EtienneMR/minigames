@@ -1,5 +1,3 @@
-$card-width: min(10vw, 10vh);
-
 .card-container {
     display: flex;
     max-width: 90vw;
@@ -8,10 +6,10 @@ $card-width: min(10vw, 10vh);
 
 .flip-card {
     background-color: transparent;
-    width: $card-width;
-    height: $card-width;
+    width: min(10vw, 10vh);
+    height: min(10vw, 10vh);
     perspective: 1000px;
-    margin: 0.1*$card-width;
+    margin: min(1vw, 1vh);
 
     &[data-owner="true"] .flip-card-back {
         background-color: red;
@@ -45,7 +43,7 @@ $card-width: min(10vw, 10vh);
     backface-visibility: hidden;
 
     border: 2px solid;
-    border-radius: 0.2*$card-width;
+    border-radius: min(2vw, 2vh);
 
     img {
         width: 100%;
