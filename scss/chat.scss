@@ -49,12 +49,44 @@
         border-radius: 1rem;
     }
 
-    &:hover .content,
-    &[data-show] .content {
+    &:hover .content:not(:empty),
+    &[data-show] .content:not(:empty) {
         max-height: 25vh;
         overflow-y: auto;
         padding: 0.5em;
         margin-bottom: 1em;
+    }
+
+    .gif-list {
+        height: 0;
+        padding: 0;
+        margin-bottom: 0;
+        display: flex;
+        flex-direction: row;
+        overflow-x: hidden;
+        transition: all 1s;
+        background-color: black;
+        border-radius: 1rem;
+
+        video {
+            border-radius: 1rem;
+            cursor: pointer;
+
+            &:empty {
+                background-color: #666;
+            }
+
+            &:not(:last-child) {
+                margin-right: 1em;
+            }
+        }
+    }
+
+    &[data-gifs] .gif-list {
+        height: 15vh;
+        padding: .5em;
+        margin-bottom: 1em;
+        overflow-x: scroll;
     }
 
     .bubble {
@@ -81,6 +113,9 @@
         * {
             margin: 0;
             width: 100%;
+        }
+        video {
+            border-radius: 1rem;
         }
     }
 }

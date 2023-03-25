@@ -63,6 +63,7 @@ jQuery(() => {
 
     let chat = $("#chat")
     let chatHistory = $("#chat-history")
+    let chatGifs = $("#chat-gifs")
     let chatForm = $("#chat-form")
     let chatInput = $("#chat-input")
     let chatSend = $("#chat-send")
@@ -77,8 +78,9 @@ jQuery(() => {
                 type: "text",
                 message: input
             })
-    
+
             chatInput.val("")
+            chatInput.trigger("input")
         }
     })
 
@@ -95,6 +97,16 @@ jQuery(() => {
                 let messageP = document.createElement("p")
                 messageP.innerText = message
                 messageDiv.append(messageP)
+                break;
+
+            case "gif":
+                let video = document.createElement("video")
+                video.muted = true
+                video.loop = true
+                video.controls = false
+                video.src = message
+                video.play()
+                messageDiv.append(video)
                 break;
 
             default:
@@ -119,6 +131,55 @@ jQuery(() => {
                 chat.removeAttr("data-show")
             }
         }, 5000)
+
+        chatHistory.scrollTop(chatHistory[0].scrollHeight)
+    })
+
+    chatInput.on("input", (evt) => {
+        if (chatInput.val()) {
+            chat.attr("data-gifs", true)
+
+            fetch(`https://api.giphy.com/v1/gifs/search?api_key=vqt2EIdJmahElquY7qTlzHzvJ5vmNEXu&q=${encodeURIComponent(chatInput.val())}&limit=15&offset=0&rating=g&lang=fr`)
+                .then(res => res.json())
+                .then(res => {
+                    chatGifs.children().remove()
+                    console.log(res)
+                    res.data.reduce((promise, gif) => {
+                        let images = gif.images
+
+                        let video = document.createElement("video")
+                        video.muted = true
+                        video.controls = false
+                        video.src = images.fixed_height.mp4
+
+                        video.addEventListener('mouseover', () => video.play(), false)
+                        video.addEventListener("click", () => {
+                            socket.emit("chat", {
+                                type: "gif",
+                                message: images.original.mp4
+                            })
+                            chatInput.val("")
+                            chatInput.trigger("input")
+                        }, { once: true })
+
+                        chatGifs.append(video)
+
+                        return promise.then(() => new Promise((resolve) => {
+                            if (video && video.parentElement) {
+                                video.addEventListener("ended", resolve, { once: true })
+                                video.play()
+                            }
+                            else resolve()
+                        }))
+                    }, Promise.resolve())
+                })
+        }
+        else {
+            chat.removeAttr("data-gifs")
+            let children = chatGifs.children()
+
+            setTimeout(() => children.remove(), 1000)
+        }
     })
 
     document.body.style.paddingBottom = "3em"
