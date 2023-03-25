@@ -208,19 +208,5 @@ module.exports = (io) => {
             if (this.player2 == socket) this.player2 = null
             this.sendUpdate()
         }
-
-        /**
-         * 
-         * @returns {express.Router}
-         */
-        static loadPages() {
-            let router = express.Router()
-
-            router.get("/", (req, res) => {
-                res.render("puissance4")
-            })
-
-            return router
-        }
     }
 }

@@ -125,7 +125,6 @@ function makeServerId(length = 4) {
             }
 
             socket.join(party)
-            server.addPlayer(socket)
 
             socket.on('disconnecting', () => {
                 server.removePlayer(socket)
@@ -138,6 +137,15 @@ function makeServerId(length = 4) {
                     }, minigame.ttl)
                 }
             })
+
+            socket.on("chat", (params) => {
+                io.to(party).emit("chat", {
+                    ...params,
+                    sender: socket.handshake.query.username
+                })
+            })
+
+            server.addPlayer(socket)
         }
         else {
             console.error(`Invalid game: ${game}`)

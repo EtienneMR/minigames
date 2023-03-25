@@ -78,7 +78,7 @@ socket.on("update", (updateData) => {
         $("#remaning").html(`<button class="share-btn" type="button"><i class="bx bx-share"></i>Inviter un ami</button>`)
     }
     else if (started) {
-        $("#remaning").text(`${data.filter(card => card.owner === null).length / 2} paires restantes`)
+        $("#remaning").text(`${data.filter(card => card.owner === true).length / 2}-${data.filter(card => card.owner === false).length / 2} paires restantes`)
     }
     else {
         $("#remaning").text((turn == socket.id) ? (alone ? "Votre adversaire n'a toujours pas rejoint" : "Votre adversaire vous attends") : "Votre adversaire doit configurer la partie")

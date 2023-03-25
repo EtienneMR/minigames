@@ -41,7 +41,7 @@ socket.on("setParty", (party) => {
 })
 
 socket.on("redirect", (target) => {
-    location =  new URL(target, location)
+    location = new URL(target, location)
 })
 
 socket.on("error", (err) => {
@@ -60,4 +60,66 @@ jQuery(() => {
             })
         }
     })
+
+    let chat = $("#chat")
+    let chatHistory = $("#chat-history")
+    let chatForm = $("#chat-form")
+    let chatInput = $("#chat-input")
+    let chatSend = $("#chat-send")
+
+    chatSend.on("click", () => chatForm.trigger("submit"))
+    chatForm.on("submit", (evt) => {
+        evt.preventDefault()
+        let input = chatInput.val()
+
+        if (input) {
+            socket.emit("chat", {
+                type: "text",
+                message: input
+            })
+    
+            chatInput.val("")
+        }
+    })
+
+    socket.on("chat", ({ type, message, sender }) => {
+        let messageDiv = document.createElement("div")
+        messageDiv.classList.add("bubble")
+
+        let senderH3 = document.createElement("h3")
+        senderH3.innerText = sender
+        messageDiv.append(senderH3)
+
+        switch (type) {
+            case "text":
+                let messageP = document.createElement("p")
+                messageP.innerText = message
+                messageDiv.append(messageP)
+                break;
+
+            default:
+                console.error("Err: unknown type", type)
+                break;
+        }
+
+        chatHistory.append(messageDiv)
+
+        if (chatHistory.children().length > 10) {
+            chatHistory.children()[0].remove()
+        }
+
+        chat.attr("data-show", (chat.attr("data-show") ?? null) - (-1))
+
+        setTimeout(() => {
+            let target = (chat.attr("data-show") ?? null) - 1
+            if (target > 0) {
+                chat.attr("data-show", target)
+            }
+            else {
+                chat.removeAttr("data-show")
+            }
+        }, 5000)
+    })
+
+    document.body.style.paddingBottom = "3em"
 })
