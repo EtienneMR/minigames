@@ -64,8 +64,6 @@ module.exports = (io) => {
                 id: makeId(),
             }]
             this.lockedUnits = []
-
-            this.started = true
         }
 
         sendUpdate() {
@@ -107,11 +105,32 @@ module.exports = (io) => {
                 return socket.disconnect()
             }
 
+            socket.on("start", () => {
+                if (socket == this.player1 && !this.started) {
+                    this.started = true
+                    this.sendUpdate()
+                }
+            })
+
+            socket.on("regen", () => {
+                this.mapData = generation()
+                socket.emit("data", {
+                    mapData: this.mapData,
+                    units: this.units
+                })
+            })
+
             socket.on("move", (id, x, z) => {
                 if (socket == (this.p1turn ? this.player1 : this.player2) && this.started && !this.ended) {
                     let data = this.p1turn ? this.p1data : this.p2data
                     let unit = this.units.find(u => u.id == id && u.owner == (socket == this.player1 ? 0 : 1))
-                    if (unit && data.wheat >= 1 && Math.max(Math.abs(unit.x-x), Math.abs(unit.z-z)) <= 1 && this.lockedUnits.find(u => u == unit.id) == null) {
+                    if (
+                        unit &&
+                        data.wheat >= 1 &&
+                        Math.max(Math.abs(unit.x - x), Math.abs(unit.z - z)) <= 1 &&
+                        this.lockedUnits.find(u => u == unit.id) == null &&
+                        this.mapData[x][z].biome.walkable
+                    ) {
                         data.wheat -= 1
                         this.lockedUnits.push(unit.id)
 
@@ -180,7 +199,7 @@ module.exports = (io) => {
                             id: makeId(),
                         }
                         this.units.push(unit)
-                        io.to(this.party).emit("newUnit",unit)
+                        io.to(this.party).emit("newUnit", unit)
                         socket.emit("ressources", data)
                     }
                 }
@@ -196,12 +215,35 @@ module.exports = (io) => {
                 if (this.player1replay && this.player2replay) {
                     this.player1replay = false
                     this.player2replay = false
+
                     this.started = false
                     this.ended = false
+                    this.p1turn = true
+
+                    this.p1data = {
+                        gold: 1,
+                        wheat: 2,
+                    }
+                    this.p2data = {
+                        gold: 1,
+                        wheat: 2,
+                    }
+                    this.units = [{
+                        x: 0,
+                        z: 0,
+                        owner: 0,
+                        id: makeId(),
+                    }, {
+                        x: CONSTS.WIDTH - 1,
+                        z: CONSTS.HEIGHT - 1,
+                        owner: 1,
+                        id: makeId(),
+                    }]
+                    this.lockedUnits = []
                 }
                 this.sendUpdate()
             })
-            
+
             socket.once("ready", () => {
                 this.sendUpdate()
                 if (this.mapData && this.units) {

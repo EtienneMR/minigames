@@ -1,5 +1,4 @@
 const CONSTS = (() => {
-    const CASE_SIZE = 50
     const WIDTH = 10
     const HEIGHT = 10
     const BUILDING_NONE = {
@@ -22,10 +21,11 @@ const CONSTS = (() => {
             height: [20, 60],
             weight: 10,
             minMainDist: 0,
+            walkable: true,
             buildings: [
                 {
                     id: "field",
-                    weight: 10,
+                    weight: 5,
                     effects: [
                         {
                             id: "wheat",
@@ -40,8 +40,9 @@ const CONSTS = (() => {
             id: "forest",
             color: [[10, 80, 10], [5, 60, 5]],
             height: [30, 70],
-            weight: 10,
+            weight: 5,
             minMainDist: 1.5,
+            walkable: true,
             buildings: [
                 BUILDING_NONE
             ],
@@ -49,9 +50,10 @@ const CONSTS = (() => {
         {
             id: "mountains",
             color: [[120, 120, 120], [80, 80, 80]],
-            height: [60, 90],
+            height: [60, 80],
             weight: 10,
             minMainDist: 2,
+            walkable: true,
             buildings: [
                 {
                     id: "mine",
@@ -69,9 +71,10 @@ const CONSTS = (() => {
         {
             id: "snow_mountains",
             color: [[200, 200, 200], [255, 255, 255]],
-            height: [80, 100],
+            height: [70, 100],
             weight: 10,
             minMainDist: 4,
+            walkable: false,
             buildings: [
                 BUILDING_NONE
             ],
@@ -82,12 +85,14 @@ const CONSTS = (() => {
             height: [0, 25],
             weight: 50,
             minMainDist: 3,
-            buildings: [BUILDING_NONE],
+            walkable: false,
+            buildings: [
+                BUILDING_NONE
+            ],
         },
     ]
 
     return {
-        CASE_SIZE,
         WIDTH,
         HEIGHT,
         BUILDING_NONE,

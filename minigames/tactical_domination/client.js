@@ -1,9 +1,12 @@
 gsap.registerPlugin(PixiPlugin)
 PixiPlugin.registerPIXI(PIXI)
 
+const CASE_SIZE = Math.min(Math.round(innerWidth / 12 / 10) * 10, 50)
+$(".stats, #config").css("width", `${CASE_SIZE * CONSTS.WIDTH}px`)
+
 const app = new PIXI.Application({
-    width: CONSTS.CASE_SIZE * CONSTS.WIDTH,
-    height: CONSTS.CASE_SIZE * CONSTS.HEIGHT,
+    width: CASE_SIZE * CONSTS.WIDTH,
+    height: CASE_SIZE * CONSTS.HEIGHT,
     view: document.getElementById("app")
 });
 
@@ -20,9 +23,11 @@ socket.on("update", (data) => {
         replay,
     } = data
 
+    $("#config").hide()
     if (!started) {
         if (turn == socket.id) {
             $("#turn").text("Veuillez configurer la partie").show()
+            $("#config").show()
         }
         else {
             $("#turn").text("En attente de la configuration du serveur ...").show()
@@ -69,10 +74,10 @@ socket.on("data", ({ mapData, units }) => {
             const square = new PIXI.Graphics();
             square.lineStyle(1, 0xFFFFFF);
             square.beginFill(`rgb(${r},${g},${b})`);
-            square.drawRect(0.5, 0.5, CONSTS.CASE_SIZE - 1, CONSTS.CASE_SIZE - 1);
+            square.drawRect(0.5, 0.5, CASE_SIZE - 1, CASE_SIZE - 1);
             square.endFill();
-            square.x = x * CONSTS.CASE_SIZE;
-            square.y = z * CONSTS.CASE_SIZE;
+            square.x = x * CASE_SIZE;
+            square.y = z * CASE_SIZE;
             container.addChild(square);
 
             if (caseData.building.id != CONSTS.BUILDING_NONE.id) {
@@ -80,7 +85,7 @@ socket.on("data", ({ mapData, units }) => {
 
                 sprite.x = square.x + 5
                 sprite.y = square.y + 5
-                sprite.width = sprite.height = CONSTS.CASE_SIZE - 10
+                sprite.width = sprite.height = CASE_SIZE - 10
 
                 if (caseData.building.id == CONSTS.BUILDING_MAINBASE.id) {
                     sprite.eventMode = "static"
@@ -88,7 +93,7 @@ socket.on("data", ({ mapData, units }) => {
                     sprite.on("pointerdown", () => socket.emit("newUnit", x, z))
                 }
 
-                app.stage.addChild(sprite)
+                container.addChild(sprite)
                 let owner = "NOT_UPDATED"
 
                 app.ticker.add(() => {
@@ -104,9 +109,9 @@ socket.on("data", ({ mapData, units }) => {
     for (let unit of units) {
         const sprite = unit.sprite = new PIXI.Sprite()
 
-        sprite.x = (unit.x + 0.5) * CONSTS.CASE_SIZE
-        sprite.y = (unit.z + 0.5) * CONSTS.CASE_SIZE
-        sprite.width = sprite.height = CONSTS.CASE_SIZE - 10
+        sprite.x = (unit.x + 0.5) * CASE_SIZE
+        sprite.y = (unit.z + 0.5) * CASE_SIZE
+        sprite.width = sprite.height = CASE_SIZE - 10
         sprite.texture = PIXI.Texture.from(`/tactical_domination/icons/army_${unit.owner}.png`)
         sprite.eventMode = "static"
         sprite.cursor = 'pointer'
@@ -136,8 +141,8 @@ socket.on("move", (id, x, z) => {
             units = units.filter(u => u != target)
         }
         gsap.to(unit.sprite, {
-            x: (x + 0.5) * CONSTS.CASE_SIZE,
-            y: (z + 0.5) * CONSTS.CASE_SIZE,
+            x: (x + 0.5) * CASE_SIZE,
+            y: (z + 0.5) * CASE_SIZE,
             duration: 1
         });
     }
@@ -148,9 +153,9 @@ socket.on("newUnit", unit => {
     units.push(unit)
     const sprite = unit.sprite = new PIXI.Sprite()
 
-    sprite.x = (unit.x + 0.5) * CONSTS.CASE_SIZE
-    sprite.y = (unit.z + 0.5) * CONSTS.CASE_SIZE
-    sprite.width = sprite.height = CONSTS.CASE_SIZE - 10
+    sprite.x = (unit.x + 0.5) * CASE_SIZE
+    sprite.y = (unit.z + 0.5) * CASE_SIZE
+    sprite.width = sprite.height = CASE_SIZE - 10
     sprite.texture = PIXI.Texture.from(`/tactical_domination/icons/army_${unit.owner}.png`)
     sprite.eventMode = "static"
     sprite.cursor = 'pointer'
@@ -169,19 +174,20 @@ socket.on("ressources", (res) => {
 
 function alignToGrid(point) {
     return new PIXI.Point(
-        Math.round((point.x + CONSTS.CASE_SIZE / 2) / CONSTS.CASE_SIZE) * CONSTS.CASE_SIZE - CONSTS.CASE_SIZE / 2,
-        Math.round((point.y + CONSTS.CASE_SIZE / 2) / CONSTS.CASE_SIZE) * CONSTS.CASE_SIZE - CONSTS.CASE_SIZE / 2
+        Math.round((point.x + CASE_SIZE / 2) / CASE_SIZE) * CASE_SIZE - CASE_SIZE / 2,
+        Math.round((point.y + CASE_SIZE / 2) / CASE_SIZE) * CASE_SIZE - CASE_SIZE / 2
     )
 }
 
 function isValidMove(unit) {
     let [x, z] = [
-        (dragTarget.sprite.x - CONSTS.CASE_SIZE / 2) / CONSTS.CASE_SIZE,
-        (dragTarget.sprite.y - CONSTS.CASE_SIZE / 2) / CONSTS.CASE_SIZE
+        (dragTarget.sprite.x - CASE_SIZE / 2) / CASE_SIZE,
+        (dragTarget.sprite.y - CASE_SIZE / 2) / CASE_SIZE
     ]
 
     return Math.max(Math.abs(unit.x - x), Math.abs(unit.z - z)) <= 1 &&
-        !units.find(u => u.x == x && u.z == z && u.owner == unit.owner && u != unit)
+        !units.find(u => u.x == x && u.z == z && u.owner == unit.owner && u != unit) &&
+        mapData[x][z].biome.walkable
         ? [true, x, z] : [false, null, null]
 }
 
@@ -211,8 +217,8 @@ function onDragEnd() {
         }
         else dragTarget.sprite.alpha = 1
         dragTarget.sprite.position = new PIXI.Point(
-            (dragTarget.x + 0.5) * CONSTS.CASE_SIZE,
-            (dragTarget.z + 0.5) * CONSTS.CASE_SIZE
+            (dragTarget.x + 0.5) * CASE_SIZE,
+            (dragTarget.z + 0.5) * CASE_SIZE
         )
         dragTarget.sprite.tint = 0xffffff
         dragTarget = null
@@ -234,3 +240,6 @@ $("#end-turn button").click(() => {
         unit.sprite.alpha = 1
     }
 })
+
+$("#config-start").click(() => socket.emit("start"))
+$("#config-regen").click(() => socket.emit("regen"))
