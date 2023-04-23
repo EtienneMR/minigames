@@ -11,7 +11,7 @@ module.exports = (io) => {
     return class batonnets extends game {
         static id = "puissance4"
         static title = "Le jeu du puissance 4"
-        static desc = "Jouez au grand au puissance 4 avec vos amis !"
+        static desc = "Jouez au puissance 4 avec vos amis !"
         static ttl = 60 * 1000
         static hidden = false
 

@@ -1,3 +1,16 @@
+@keyframes shimmer {
+    to {
+        background-position: -100% 0;
+    }
+}
+
+%loader {
+    background-image: linear-gradient(90deg, rgb(22 22 22) 0px, rgb(50 50 50 / 90%) 40px, rgb(22 22 22) 50px);
+    background-size: 300%;
+    background-position: 100% 0;
+    animation: shimmer 1.5s infinite;
+}
+
 .chat {
     position: fixed;
     bottom: 1em;
@@ -70,10 +83,13 @@
 
         video {
             border-radius: 1rem;
-            cursor: pointer;
+
+            &:not(:empty) {
+                cursor: pointer;
+            }
 
             &:empty {
-                background-color: #666;
+                @extend %loader
             }
 
             &:not(:last-child) {
@@ -114,8 +130,13 @@
             margin: 0;
             width: 100%;
         }
+
         video {
             border-radius: 1rem;
+
+            &:empty {
+                @extend %loader
+            }
         }
     }
 }

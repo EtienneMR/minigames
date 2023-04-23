@@ -1,7 +1,7 @@
 let isUserChange = false
 let inviteMessages = [
     "On va voir qui est le plus fort",
-    "Je suis inbatable sur ce jeu",
+    "Je suis imbatable sur ce jeu",
     "Je suis prêt a parier que tu ne me battra jamais à ce jeu"
 ]
 
@@ -92,6 +92,9 @@ jQuery(() => {
         senderH3.innerText = sender
         messageDiv.append(senderH3)
 
+        let heightloaded = Promise.resolve()
+        let contentLoaded = Promise.resolve()
+
         switch (type) {
             case "text":
                 let messageP = document.createElement("p")
@@ -106,7 +109,15 @@ jQuery(() => {
                 video.controls = false
                 video.src = message
 
-                video.play()
+                heightloaded = contentLoaded = new Promise(resolve => {
+                    video.addEventListener("loadedmetadata", resolve, { once: true })
+                })
+
+                contentLoaded = new Promise(resolve => {
+                    video.addEventListener("canplay", resolve, { once: true })
+                })
+                    .then(() => video.play())
+
                 messageDiv.append(video)
                 break;
 
@@ -123,23 +134,25 @@ jQuery(() => {
 
         chat.attr("data-show", (chat.attr("data-show") ?? null) - (-1))
 
-        setTimeout(() => {
-            let target = (chat.attr("data-show") ?? null) - 1
-            if (target > 0) {
-                chat.attr("data-show", target)
-            }
-            else {
-                chat.removeAttr("data-show")
-            }
+        heightloaded
+            .then(() => {
+                if (messageDiv.clientHeight > $(window).height() * 0.25) {
+                    chatHistory.css("max-height", `${messageDiv.clientHeight + 16}px`)
+                }
+            })
+            .then(contentLoaded)
+            .then(() => new Promise(resolve => setTimeout(resolve, 5000)))
+            .then(() => {
+                let target = (chat.attr("data-show") ?? null) - 1
+                if (target > 0) {
+                    chat.attr("data-show", target)
+                }
+                else {
+                    chat.removeAttr("data-show")
+                }
 
-            chatHistory.css("max-height", "")
-        }, 5000)
-
-        setTimeout(() => {
-            if (messageDiv.clientHeight > $(window).height() * 0.25) {
-                chatHistory.css("max-height", `${messageDiv.clientHeight + 16}px`)
-            }
-        }, 500)
+                chatHistory.css("max-height", "")
+            })
 
         chatHistory.scrollTop(chatHistory[0].scrollHeight)
     })
@@ -151,22 +164,39 @@ jQuery(() => {
         if (controller && !controller.signal.aborted) controller.abort()
         controller = new AbortController()
 
+        if (!offset) {
+            chatGifs.scrollLeft(0)
+            chatGifs.children().remove()
+        }
+
+        let pool = []
+
+        for (let i = 0; i < 15; i++) {
+            let video = document.createElement("video")
+
+            video.muted = true
+            video.controls = false
+            video.crossOrigin = ""
+
+            chatGifs.append(video)
+
+            pool.push(video)
+        }
+
+        let query = chatInput.val()
+        
+        if (query.toLowerCase().includes("etienne")) {
+            query = "Giga Chad"
+        }
+
         loading = true
-        fetch(`https://api.giphy.com/v1/gifs/search?api_key=vqt2EIdJmahElquY7qTlzHzvJ5vmNEXu&q=${encodeURIComponent(chatInput.val())}&limit=15&offset=0&rating=r&lang=fr$&offset=${offset}`, {signal: controller.signal})
+        fetch(`https://api.giphy.com/v1/gifs/search?api_key=vqt2EIdJmahElquY7qTlzHzvJ5vmNEXu&q=${encodeURIComponent(query)}&limit=15&offset=0&rating=r&lang=fr$&offset=${offset}`, { signal: controller.signal })
             .then(res => res.json())
             .then(res => {
-                if (!offset) {
-                    chatGifs.scrollLeft(0)
-                    chatGifs.children().remove()
-                }
-
                 res.data.reduce((promise, gif) => {
                     let images = gif.images
 
-                    let video = document.createElement("video")
-                    video.muted = true
-                    video.controls = false
-                    video.crossOrigin = ""
+                    let video = pool.shift()
                     video.src = images.fixed_height.mp4
 
                     video.addEventListener('mouseover', () => video.play(), false)
@@ -178,8 +208,6 @@ jQuery(() => {
                         chatInput.val("")
                         chatInput.trigger("input")
                     }, { once: true })
-
-                    chatGifs.append(video)
 
                     return promise.then(() => new Promise((resolve) => {
                         if (video && video.parentElement) {
@@ -197,6 +225,8 @@ jQuery(() => {
                     console.error(err)
                 }
             })
+            .finally(() => $(pool).remove())
+
     }
 
     chatInput.on("input", (evt) => {
@@ -215,10 +245,11 @@ jQuery(() => {
 
     chatGifs.on("scroll", () => {
         if (chatGifs[0].scrollWidth - (chatGifs[0].scrollLeft + chatGifs[0].clientWidth) < 50 && !loading && chat.attr("data-gifs")) {
-            console.log("loading more")
             load(chatGifs.children().length)
         }
     })
 
     document.body.style.paddingBottom = "3em"
+
+    socket.emit("ready")
 })

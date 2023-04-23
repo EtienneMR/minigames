@@ -13,6 +13,7 @@
     "express-hbs": "^2.4.0",
     "express-session": "^1.17.3",
     "memorystore": "^1.6.7",
+    "noisejs": "^2.1.0",
     "sass": "^1.58.3",
     "socket.io": "^4.6.0"
   }

@@ -111,5 +111,3 @@ $("#new").submit((evt) => {
 $("#replay").click(() => {
     socket.emit("replay")
 })
-
-window.addEventListener("load", ()=>socket.emit("ready"))

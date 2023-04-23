@@ -1,0 +1,28 @@
+{{#contentFor "scripts"}}
+<script src="/tactical_domination/shared.js{{cache_ver}}"></script>
+<script src="https://pixijs.download/release/pixi.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/PixiPlugin.min.js"></script>
+{{/contentFor}}
+{{#contentFor "meta"}}
+<meta property="og:title" content="Tactical Domination" />
+<meta property="og:site_name" content="etiennemr.fr" />
+<meta property="og:type" content="game" />
+<meta property="og:description" content="Viens jouer au puissance 4" />
+{{/contentFor}}
+
+<h1 id="title">??? vs ???</h1>
+<div class="stats">
+    <span>
+        <img src="/tactical_domination/icons/wheat.png">
+        <span id="wheat">0</span>
+    </span>
+    <span>
+        <img src="/tactical_domination/icons/gold.png">
+        <span id="gold">0</span>
+    </span>
+</div>
+<canvas id="app"></canvas>
+<h3 id="turn">...</h3>
+<p id="end-turn"><button>Finir le tour</button></p>
+<button id="replay">Rejouer 0/2</button>

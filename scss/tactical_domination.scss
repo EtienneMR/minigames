@@ -1,0 +1,22 @@
+.stats {
+    font-size: 1.25em;
+    width: 500px;
+    display: flex;
+    justify-content: flex-end;
+    user-select: none;
+
+    &>span {
+        &>img {
+            height: 1em;
+            margin-right: 0.5em;
+        }
+
+        &>span {
+            font-weight: bold;
+        }
+
+        &:not(:last-child) {
+            margin-right: 1em;
+        }
+    }
+}
