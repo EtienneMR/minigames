@@ -41,6 +41,7 @@ module.exports = (io) => {
             this.started = false
             this.ended = false
             this.p1turn = true
+            this.remaning = 10
 
             this.p1data = {
                 gold: 1,
@@ -74,6 +75,7 @@ module.exports = (io) => {
                 title: (this.player1?.handshake.query.userid == this.player2?.handshake.query.userid) ? "Partie d'entrainement" : (this.player1?.handshake.query.username ?? "???") + " vs " + (this.player2?.handshake.query.username ?? "???"),
                 replay: `${this.player1replay + this.player2replay}/2`,
                 turn: (this.p1turn ? this.player1?.id : this.player2?.id),
+                remaning: this.remaning,
             })
         }
 
@@ -168,10 +170,23 @@ module.exports = (io) => {
                             let caseData = rowData[z]
                             if (caseData.owner == (this.p1turn ? 0 : 1)) {
                                 for (let effect of caseData.building.effects) {
-                                    data[effect.id] += effect.value
+                                    data[effect.id] += effect.value[this.remaning > 0 ? 0 : 1]
                                 }
                             }
                         }
+                    }
+
+                    let ownedUnits = this.units.filter(u => u.owner == (this.p1turn ? 0 : 1))
+                    data.wheat -= ownedUnits.length
+                    let toKill = []
+                    while (data.wheat < 0 && ownedUnits.length > 0) {
+                        let id = ownedUnits[ownedUnits.length - 1].id
+                        this.units = this.units.filter(u => u.id != id)
+                        toKill.push(id)
+                        data.wheat += 1
+                    }
+                    if (toKill.length > 0) {
+                        io.to(this.party).emit("killUnits", toKill)
                     }
 
                     this.lockedUnits = []
@@ -179,6 +194,9 @@ module.exports = (io) => {
                     socket.emit("ressources", data)
 
                     this.p1turn = !this.p1turn
+
+                    if (this.p1turn && this.remaning > 0) this.remaning--
+
                     this.sendUpdate()
                 }
             })
@@ -219,6 +237,7 @@ module.exports = (io) => {
                     this.started = false
                     this.ended = false
                     this.p1turn = true
+                    this.remaning = 10
 
                     this.p1data = {
                         gold: 1,

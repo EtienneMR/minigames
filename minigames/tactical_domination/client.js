@@ -21,6 +21,7 @@ socket.on("update", (data) => {
         ended,
         title,
         replay,
+        remaning,
     } = data
 
     $("#config").hide()
@@ -32,22 +33,27 @@ socket.on("update", (data) => {
         else {
             $("#turn").text("En attente de la configuration du serveur ...").show()
         }
+        $("#remaning").text((turn == socket.id) ? (alone ? "Votre adversaire n'a toujours pas rejoint" : "Votre adversaire vous attends") : "Votre adversaire doit configurer la partie")
         $("#end-turn").hide()
     }
     else if (ended) {
         $("#turn").text(turn == socket.id ? "Vous avez gagné !" : "Vous avez perdu !").show()
+        $("#remaning").hide()
         $("#end-turn").hide()
     }
     else if (alone) {
         $("#turn").text("En attente d'un adversaire ...").show()
+        $("#remaning").html(`<button class="share-btn" type="button"><i class="bx bx-share"></i>Inviter un ami</button>`)
         $("#end-turn").hide()
     }
     else if (turn != socket.id) {
         $("#turn").text("Tour de l'adversaire").show()
+        $("#remaning").text(remaning > 0 ? `Les ressources seront épuisées dans ${remaning} tour${remaning > 1 ? "s" : ""}`: "Les ressources sont épuisées")
         $("#end-turn").hide()
     }
     else {
         $("#turn").hide()
+        $("#remaning").text(remaning > 0 ? `Les ressources seront épuisées dans ${remaning} tour${remaning > 1 ? "s" : ""}`: "Les ressources sont épuisées")
         $("#end-turn").show()
     }
     $("#title").text(title)
@@ -71,14 +77,14 @@ socket.on("data", ({ mapData, units }) => {
 
             let [r, g, b] = UTILS.lerpArrays(caseData.biome.color, UTILS.unlerp(caseData.biome.height[0], caseData.biome.height[1], caseData.y))
 
-            const square = new PIXI.Graphics();
-            square.lineStyle(1, 0xFFFFFF);
-            square.beginFill(`rgb(${r},${g},${b})`);
-            square.drawRect(0.5, 0.5, CASE_SIZE - 1, CASE_SIZE - 1);
-            square.endFill();
-            square.x = x * CASE_SIZE;
-            square.y = z * CASE_SIZE;
-            container.addChild(square);
+            const square = new PIXI.Graphics()
+            square.lineStyle(1, 0xFFFFFF)
+            square.beginFill(`rgb(${r},${g},${b})`)
+            square.drawRect(0.5, 0.5, CASE_SIZE - 1, CASE_SIZE - 1)
+            square.endFill()
+            square.x = x * CASE_SIZE
+            square.y = z * CASE_SIZE
+            container.addChild(square)
 
             if (caseData.building.id != CONSTS.BUILDING_NONE.id) {
                 const sprite = new PIXI.Sprite()
@@ -89,7 +95,7 @@ socket.on("data", ({ mapData, units }) => {
 
                 if (caseData.building.id == CONSTS.BUILDING_MAINBASE.id) {
                     sprite.eventMode = "static"
-                    sprite.cursor = 'pointer'
+                    sprite.cursor = "pointer"
                     sprite.on("pointerdown", () => socket.emit("newUnit", x, z))
                 }
 
@@ -119,7 +125,7 @@ socket.on("data", ({ mapData, units }) => {
 
         sprite.on("pointerdown", onDragStart, unit)
 
-        app.stage.addChild(sprite)
+        container.addChild(sprite)
     }
 })
 
@@ -163,7 +169,20 @@ socket.on("newUnit", unit => {
 
     sprite.on("pointerdown", onDragStart, unit)
 
-    app.stage.addChild(sprite)
+    container.addChild(sprite)
+})
+
+socket.on("killUnits", ids => {
+    units = units.filter(u => {
+        if (ids.includes(u.id)) {
+            gsap.to(u.sprite, {
+                alpha: 0,
+                duration: 1
+            }).then(() => u.sprite.destroy())
+            return false
+        }
+        else return true
+    })
 })
 
 socket.on("ressources", (res) => {

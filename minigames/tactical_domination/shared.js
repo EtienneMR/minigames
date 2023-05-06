@@ -11,7 +11,7 @@ const CONSTS = (() => {
         weight: 0,
         effects: [{
             id: "wheat",
-            value: 1
+            value: [3, 3]
         }]
     }
     const BIOMES = [
@@ -29,7 +29,7 @@ const CONSTS = (() => {
                     effects: [
                         {
                             id: "wheat",
-                            value: 2
+                            value: [10, 3]
                         }
                     ]
                 },
@@ -61,7 +61,7 @@ const CONSTS = (() => {
                     effects: [
                         {
                             id: "gold",
-                            value: 1
+                            value: [1, 0]
                         }
                     ]
                 },
