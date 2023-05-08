@@ -29,7 +29,7 @@ const CONSTS = (() => {
                     effects: [
                         {
                             id: "wheat",
-                            value: [10, 3]
+                            value: [5, 2]
                         }
                     ]
                 },
