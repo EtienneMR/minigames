@@ -41,7 +41,7 @@ module.exports = (io) => {
             this.started = false
             this.ended = false
             this.p1turn = true
-            this.remaning = 10
+            this.remaning = 15
 
             this.p1data = {
                 gold: 1,
@@ -116,7 +116,7 @@ module.exports = (io) => {
 
             socket.on("regen", () => {
                 this.mapData = generation()
-                socket.emit("data", {
+                io.to(this.party).emit("data", {
                     mapData: this.mapData,
                     units: this.units
                 })
@@ -237,7 +237,7 @@ module.exports = (io) => {
                     this.started = false
                     this.ended = false
                     this.p1turn = true
-                    this.remaning = 10
+                    this.remaning = 15
 
                     this.p1data = {
                         gold: 1,
